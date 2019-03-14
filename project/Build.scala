@@ -25,6 +25,8 @@ import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbtbuildinfo.BuildInfoPlugin
 import sbtbuildinfo.BuildInfoPlugin.autoImport._
 
+import bintray.BintrayKeys._
+
 import scala.util.Properties.isJavaAtLeast
 
 /* In sbt 0.13 the Build trait would expose all vals to the shell, where you
@@ -1088,12 +1090,6 @@ object Build {
   lazy val publishSettings = Seq(
     publishMavenStyle := true,
     isSnapshot := version.value.contains("SNAPSHOT"),
-    publishTo := Some(
-      if (isSnapshot.value)
-        Opts.resolver.sonatypeSnapshots
-      else
-        Opts.resolver.sonatypeStaging
-    ),
     publishArtifact in Test := false,
     homepage := Some(url(dottyGithubUrl)),
     licenses += ("BSD New",
@@ -1165,7 +1161,9 @@ object Build {
         email = "martin.duhem@gmail.com",
         url = url("https://github.com/Duhemm")
       )
-    )
+    ),
+    bintrayOrganization := Some("epfl-lara"),
+    bintrayRepository := "maven"
   )
 
   // Compile with dotty
